@@ -1,0 +1,24 @@
+# docker-compose.yml
+version: "3.8"
+services:
+  post:
+    container_name: post
+    image: postgres:17
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-db:/var/lib/postgresql/data
+
+  nitro:
+    container_name: nitro
+    image: nitro
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://user:password@post:5432/test
+    depends_on:
+      - post
